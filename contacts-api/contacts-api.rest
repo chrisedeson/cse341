@@ -1,0 +1,9 @@
+### Get all contacts
+GET http://localhost:3000/contacts
+
+### Get a single contact by ID
+# Replace {id} with an actual contact ID from the database
+GET http://localhost:3000/contacts/{id}
+
+### Test the root endpoint
+GET http://localhost:3000/
