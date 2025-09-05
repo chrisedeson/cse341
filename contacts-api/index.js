@@ -20,6 +20,7 @@ async function connectToMongo() {
   try {
     await client.connect();
     db = client.db('contacts'); // Database name
+    app.locals.db = db; // Store db in app locals for routes to access
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -36,7 +37,7 @@ const contactsRoutes = require('./routes/contacts');
 app.use('/contacts', contactsRoutes);
 
 // Start server
-app.listen(port, async () => {
-  await connectToMongo();
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(port, () => {
+  console.log(`Server starting on http://localhost:${port}`);
+  connectToMongo();
 });
