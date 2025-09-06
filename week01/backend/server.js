@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
+require('dotenv').config();
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 // MongoDB connection
-const uri =
-  "mongodb+srv://edesonchristopher_db_user:3WbPxBTgaGJwC6ix@cluster0.skp8rck.mongodb.net/"; // Replace YOUR_PASSWORD with your actual password
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 const dbName = "cse341";
 let db;
