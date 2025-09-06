@@ -43,8 +43,12 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Test route works' });
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server starting on http://localhost:${port}`);
-  connectToMongo();
-});
+// Start server only after database connection
+async function startServer() {
+  await connectToMongo();
+  app.listen(port, () => {
+    console.log(`Server starting on http://localhost:${port}`);
+  });
+}
+
+startServer();
