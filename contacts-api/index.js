@@ -13,14 +13,11 @@ app.use(express.json());
 // MongoDB connection
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   serverSelectionTimeoutMS: 30000,
   socketTimeoutMS: 30000,
   maxPoolSize: 10,
-  ssl: true,
-  sslValidate: true,
 });
+
 let db;
 
 // Connect to MongoDB
@@ -70,11 +67,11 @@ async function startServer() {
   try {
     await connectToMongo();
     app.listen(port, () => {
-      console.log(`Server starting on http://localhost:${port}`);
+      console.log(`✅ Server started on http://localhost:${port}`);
     });
   } catch (error) {
     console.error(
-      "Failed to start server due to database connection error:",
+      "❌ Failed to start server due to database connection error:",
       error
     );
     process.exit(1);
