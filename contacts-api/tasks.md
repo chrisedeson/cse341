@@ -55,14 +55,12 @@ The following video may be helpful in completing this step:
 
 Direct link: https://video.byui.edu/media/t/1_u8dzgu7e
 
-
 Push to GitHub and Start with Express
 Complete the following steps:
 
 Set up Express and use it to listen and return "Hello World".
 Push the appropriate files to GitHub.
 Direct Link: https://video.byui.edu/media/t/1_daxwlcz2
-
 
 Install MongoDB and Import data
 Complete the following steps:
@@ -73,14 +71,12 @@ Remember, the examples in the tutorial videos show a Users collection, but you s
 
 Direct Link: https://video.byui.edu/media/t/1_4dj3ierr
 
-
 Connect your node project to MongoDB
 Complete the following steps:
 
 Create a new route file in your node project called contacts.
 For the following steps, use the debugger in VS Code to help understand what is going on with the data. And use a REST client of your choosing to make http requests to your web server. This REST Client works well.
 Direct Link: https://video.byui.edu/media/t/1_ujfu8vdx
-
 
 Add the Get and GetAll endpoints
 Complete the following steps:
@@ -89,12 +85,10 @@ Create a GET request in your contacts route file that will return all of the doc
 Create another GET request in your contacts route file that will return a single document from your contacts collection where an id matches the id from a query parameter.
 Direct Link: https://video.byui.edu/media/t/1_0juwmhcn
 
-
 Deploy and Test
 Once these api routes are working, push to GitHub and test on Render to ensure everything works in that environment as well. (NOTE: The connection string stored in your .env file will not ever be pushed to GitHub, which means it won't be published to Render. You will need to add config vars to Render.)
 
 Direct Link: https://video.byui.edu/media/t/1_r4st3h0l
-
 
 Other Help with Deployment
 Prepare for Submission

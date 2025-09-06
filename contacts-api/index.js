@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const { MongoClient } = require("mongodb");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,28 +19,28 @@ let db;
 async function connectToMongo() {
   try {
     await client.connect();
-    db = client.db('contacts'); // Database name
+    db = client.db("contacts"); // Database name
     app.locals.db = db; // Store db in app locals for routes to access
-    console.log('Connected to MongoDB');
+    console.log("Connected to MongoDB");
   } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
+    console.error("Error connecting to MongoDB:", error);
   }
 }
 
 // Routes
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the Contacts API' });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Contacts API" });
 });
 
 // Import and use contacts routes
-const contactsRoutes = require('./routes/contacts');
-console.log('Contacts routes loaded successfully');
-app.use('/contacts', contactsRoutes);
+const contactsRoutes = require("./routes/contacts");
+console.log("Contacts routes loaded successfully");
+app.use("/contacts", contactsRoutes);
 
 // Test route to verify routing works
-app.get('/test', (req, res) => {
-  console.log('Test route called');
-  res.json({ message: 'Test route works' });
+app.get("/test", (req, res) => {
+  console.log("Test route called");
+  res.json({ message: "Test route works" });
 });
 
 // Start server only after database connection
