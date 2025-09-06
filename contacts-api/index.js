@@ -12,18 +12,40 @@ app.use(express.json());
 
 // MongoDB connection
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 30000,
+  maxPoolSize: 10,
+  ssl: true,
+  sslValidate: true,
+});
 let db;
 
 // Connect to MongoDB
 async function connectToMongo() {
   try {
+    console.log("Attempting to connect to MongoDB...");
     await client.connect();
+    console.log("MongoDB client connected successfully");
+
+    // Test the connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("MongoDB ping successful");
+
     db = client.db("contacts"); // Database name
     app.locals.db = db; // Store db in app locals for routes to access
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB database: contacts");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
+    console.error(
+      "MongoDB URI (masked):",
+      process.env.MONGODB_URI
+        ? process.env.MONGODB_URI.replace(/\/\/.*@/, "//*****@")
+        : "undefined"
+    );
+    throw error; // Re-throw to prevent server from starting
   }
 }
 
@@ -45,10 +67,18 @@ app.get("/test", (req, res) => {
 
 // Start server only after database connection
 async function startServer() {
-  await connectToMongo();
-  app.listen(port, () => {
-    console.log(`Server starting on http://localhost:${port}`);
-  });
+  try {
+    await connectToMongo();
+    app.listen(port, () => {
+      console.log(`Server starting on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error(
+      "Failed to start server due to database connection error:",
+      error
+    );
+    process.exit(1);
+  }
 }
 
 startServer();
