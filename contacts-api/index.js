@@ -4,7 +4,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
@@ -34,7 +34,14 @@ app.get('/', (req, res) => {
 
 // Import and use contacts routes
 const contactsRoutes = require('./routes/contacts');
+console.log('Contacts routes loaded successfully');
 app.use('/contacts', contactsRoutes);
+
+// Test route to verify routing works
+app.get('/test', (req, res) => {
+  console.log('Test route called');
+  res.json({ message: 'Test route works' });
+});
 
 // Start server
 app.listen(port, () => {
