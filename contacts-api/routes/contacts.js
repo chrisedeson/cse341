@@ -162,7 +162,12 @@ router.post("/", async (req, res) => {
 
     // Validate required fields
     if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
-      return res.status(400).json({ error: "All fields are required: firstName, lastName, email, favoriteColor, birthday" });
+      return res
+        .status(400)
+        .json({
+          error:
+            "All fields are required: firstName, lastName, email, favoriteColor, birthday",
+        });
     }
 
     const collection = db.collection("contacts");
@@ -171,7 +176,7 @@ router.post("/", async (req, res) => {
       lastName,
       email,
       favoriteColor,
-      birthday
+      birthday,
     };
 
     const result = await collection.insertOne(newContact);
@@ -236,7 +241,9 @@ router.put("/:id", async (req, res) => {
 
     // Validate at least one field is provided
     if (!firstName && !lastName && !email && !favoriteColor && !birthday) {
-      return res.status(400).json({ error: "At least one field must be provided for update" });
+      return res
+        .status(400)
+        .json({ error: "At least one field must be provided for update" });
     }
 
     const updateFields = {};
