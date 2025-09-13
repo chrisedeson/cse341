@@ -1,7 +1,17 @@
 const express = require("express");
-const { ObjectId } = require("mongodb");
+const ContactsController = require("../controllers/contactsController");
 
 const router = express.Router();
+
+// Initialize controller when routes are loaded
+let contactsController;
+
+router.use((req, res, next) => {
+  if (!contactsController) {
+    contactsController = new ContactsController(req.app.locals.db);
+  }
+  next();
+});
 
 /**
  * @swagger
@@ -31,21 +41,7 @@ const router = express.Router();
  *                   birthday:
  *                     type: string
  */
-router.get("/", async (req, res) => {
-  try {
-    const db = req.app.locals.db;
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
-
-    const collection = db.collection("contacts");
-    const contacts = await collection.find({}).toArray();
-    res.json(contacts);
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.get("/", (req, res) => contactsController.getAllContacts(req, res));
 
 /**
  * @swagger
@@ -82,33 +78,7 @@ router.get("/", async (req, res) => {
  *       404:
  *         description: Contact not found
  */
-router.get("/:id", async (req, res) => {
-  try {
-    const db = req.app.locals.db;
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
-
-    const collection = db.collection("contacts");
-    const contactId = req.params.id;
-
-    // Validate ObjectId format
-    if (!ObjectId.isValid(contactId)) {
-      return res.status(400).json({ error: "Invalid contact ID format" });
-    }
-
-    const contact = await collection.findOne({ _id: new ObjectId(contactId) });
-
-    if (!contact) {
-      return res.status(404).json({ error: "Contact not found" });
-    }
-
-    res.json(contact);
-  } catch (error) {
-    console.error("Error fetching contact:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.get("/:id", (req, res) => contactsController.getContactById(req, res));
 
 /**
  * @swagger
@@ -151,41 +121,7 @@ router.get("/:id", async (req, res) => {
  *       400:
  *         description: Bad request
  */
-router.post("/", async (req, res) => {
-  try {
-    const db = req.app.locals.db;
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
-
-    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
-
-    // Validate required fields
-    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "All fields are required: firstName, lastName, email, favoriteColor, birthday",
-        });
-    }
-
-    const collection = db.collection("contacts");
-    const newContact = {
-      firstName,
-      lastName,
-      email,
-      favoriteColor,
-      birthday,
-    };
-
-    const result = await collection.insertOne(newContact);
-    res.status(201).json({ id: result.insertedId });
-  } catch (error) {
-    console.error("Error creating contact:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.post("/", (req, res) => contactsController.createContact(req, res));
 
 /**
  * @swagger
@@ -222,52 +158,7 @@ router.post("/", async (req, res) => {
  *       404:
  *         description: Contact not found
  */
-router.put("/:id", async (req, res) => {
-  try {
-    const db = req.app.locals.db;
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
-
-    const collection = db.collection("contacts");
-    const contactId = req.params.id;
-
-    // Validate ObjectId format
-    if (!ObjectId.isValid(contactId)) {
-      return res.status(400).json({ error: "Invalid contact ID format" });
-    }
-
-    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
-
-    // Validate at least one field is provided
-    if (!firstName && !lastName && !email && !favoriteColor && !birthday) {
-      return res
-        .status(400)
-        .json({ error: "At least one field must be provided for update" });
-    }
-
-    const updateFields = {};
-    if (firstName) updateFields.firstName = firstName;
-    if (lastName) updateFields.lastName = lastName;
-    if (email) updateFields.email = email;
-    if (favoriteColor) updateFields.favoriteColor = favoriteColor;
-    if (birthday) updateFields.birthday = birthday;
-
-    const result = await collection.updateOne(
-      { _id: new ObjectId(contactId) },
-      { $set: updateFields }
-    );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: "Contact not found" });
-    }
-
-    res.status(200).json({ message: "Contact updated successfully" });
-  } catch (error) {
-    console.error("Error updating contact:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.put("/:id", (req, res) => contactsController.updateContact(req, res));
 
 /**
  * @swagger
@@ -287,32 +178,6 @@ router.put("/:id", async (req, res) => {
  *       404:
  *         description: Contact not found
  */
-router.delete("/:id", async (req, res) => {
-  try {
-    const db = req.app.locals.db;
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
-
-    const collection = db.collection("contacts");
-    const contactId = req.params.id;
-
-    // Validate ObjectId format
-    if (!ObjectId.isValid(contactId)) {
-      return res.status(400).json({ error: "Invalid contact ID format" });
-    }
-
-    const result = await collection.deleteOne({ _id: new ObjectId(contactId) });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: "Contact not found" });
-    }
-
-    res.status(200).json({ message: "Contact deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting contact:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+router.delete("/:id", (req, res) => contactsController.deleteContact(req, res));
 
 module.exports = router;
