@@ -7,3 +7,32 @@ GET http://localhost:3000/contacts/{id}
 
 ### Test the root endpoint
 GET http://localhost:3000/
+
+### Create a new contact (POST)
+POST http://localhost:3000/contacts
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "favoriteColor": "Blue",
+  "birthday": "1990-01-01"
+}
+
+### Update a contact (PUT)
+# Replace {id} with an actual contact ID
+PUT http://localhost:3000/contacts/{id}
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "email": "jane.smith@example.com",
+  "favoriteColor": "Green",
+  "birthday": "1985-05-15"
+}
+
+### Delete a contact (DELETE)
+# Replace {id} with an actual contact ID
+DELETE http://localhost:3000/contacts/{id}

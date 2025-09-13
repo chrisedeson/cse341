@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
 require("dotenv").config();
 
 const app = express();
@@ -9,6 +11,32 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Swagger definition
+const swaggerDefinition = {
+  openapi: "3.0.0",
+  info: {
+    title: "Contacts API",
+    version: "1.0.0",
+    description: "API for managing contacts",
+  },
+  servers: [
+    {
+      url: `http://localhost:${port}`,
+      description: "Development server",
+    },
+  ],
+};
+
+const options = {
+  swaggerDefinition,
+  apis: ["./routes/*.js"], // Path to the API docs
+};
+
+const swaggerSpec = swaggerJsdoc(options);
+
+// Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // MongoDB connection
 const uri = process.env.MONGODB_URI;
