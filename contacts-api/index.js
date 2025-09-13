@@ -9,10 +9,47 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    // Allow localhost for development
+    if (origin.includes('localhost')) return callback(null, true);
+
+    // Allow Render domain
+    if (origin.includes('onrender.com')) return callback(null, true);
+
+    // In production, you might want to restrict to specific domains
+    const allowedOrigins = process.env.ALLOWED_ORIGINS ?
+      process.env.ALLOWED_ORIGINS.split(',') : [];
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Swagger definition
+const getServerUrl = () => {
+  if (process.env.RENDER_EXTERNAL_URL) {
+    return process.env.RENDER_EXTERNAL_URL;
+  }
+  if (process.env.NODE_ENV === 'production') {
+    // Fallback for other hosting services
+    return process.env.BASE_URL || `http://localhost:${port}`;
+  }
+  return `http://localhost:${port}`;
+};
+
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
@@ -22,8 +59,8 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: `http://localhost:${port}`,
-      description: "Development server",
+      url: getServerUrl(),
+      description: process.env.RENDER_EXTERNAL_URL ? "Production server" : "Development server",
     },
   ],
 };
