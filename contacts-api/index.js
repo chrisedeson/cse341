@@ -15,24 +15,25 @@ const corsOptions = {
     if (!origin) return callback(null, true);
 
     // Allow localhost for development
-    if (origin.includes('localhost')) return callback(null, true);
+    if (origin.includes("localhost")) return callback(null, true);
 
     // Allow Render domain
-    if (origin.includes('onrender.com')) return callback(null, true);
+    if (origin.includes("onrender.com")) return callback(null, true);
 
     // In production, you might want to restrict to specific domains
-    const allowedOrigins = process.env.ALLOWED_ORIGINS ?
-      process.env.ALLOWED_ORIGINS.split(',') : [];
+    const allowedOrigins = process.env.ALLOWED_ORIGINS
+      ? process.env.ALLOWED_ORIGINS.split(",")
+      : [];
 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
-    return callback(new Error('Not allowed by CORS'));
+    return callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
@@ -43,7 +44,7 @@ const getServerUrl = () => {
   if (process.env.RENDER_EXTERNAL_URL) {
     return process.env.RENDER_EXTERNAL_URL;
   }
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === "production") {
     // Fallback for other hosting services
     return process.env.BASE_URL || `http://localhost:${port}`;
   }
@@ -60,7 +61,9 @@ const swaggerDefinition = {
   servers: [
     {
       url: getServerUrl(),
-      description: process.env.RENDER_EXTERNAL_URL ? "Production server" : "Development server",
+      description: process.env.RENDER_EXTERNAL_URL
+        ? "Production server"
+        : "Development server",
     },
   ],
 };
