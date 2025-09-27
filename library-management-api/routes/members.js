@@ -47,6 +47,40 @@ const memberValidation = [
 ];
 
 // Routes
+/**
+ * @swagger
+ * /members:
+ *   get:
+ *     summary: Get all library members with pagination and filtering
+ *     tags: [Members]
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Page number for pagination
+ *         required: false
+ *         type: integer
+ *         minimum: 1
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Number of items per page (max 100)
+ *         required: false
+ *         type: integer
+ *         minimum: 1
+ *         maximum: 100
+ *         default: 10
+ *       - name: membershipType
+ *         in: query
+ *         description: Filter by membership type
+ *         required: false
+ *         type: string
+ *         enum: [Basic, Premium, Student, Senior]
+ *       - name: isActive
+ *         in: query
+ *         description: Filter by active status
+ *         required: false
+ *         type: boolean
+ */
 router.get("/", paginationValidation, memberController.getAllMembers);
 router.get("/:id", memberController.getMemberById);
 router.post("/", memberValidation, memberController.createMember);

@@ -34,6 +34,25 @@ const doc = {
       description: "Book borrowing and returning operations",
     },
   ],
+  parameters: {
+    page: {
+      name: "page",
+      in: "query",
+      description: "Page number for pagination",
+      type: "integer",
+      minimum: 1,
+      default: 1,
+    },
+    limit: {
+      name: "limit",
+      in: "query",
+      description: "Number of items per page",
+      type: "integer",
+      minimum: 1,
+      maximum: 100,
+      default: 10,
+    },
+  },
   definitions: {
     Book: {
       title: "The Great Gatsby",

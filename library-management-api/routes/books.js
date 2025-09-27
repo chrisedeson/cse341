@@ -68,6 +68,44 @@ const bookValidation = [
 ];
 
 // Routes
+/**
+ * @swagger
+ * /books:
+ *   get:
+ *     summary: Get all books with pagination and filtering
+ *     tags: [Books]
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Page number for pagination
+ *         required: false
+ *         type: integer
+ *         minimum: 1
+ *         default: 1
+ *       - name: limit
+ *         in: query
+ *         description: Number of items per page (max 100)
+ *         required: false
+ *         type: integer
+ *         minimum: 1
+ *         maximum: 100
+ *         default: 10
+ *       - name: genre
+ *         in: query
+ *         description: Filter by book genre
+ *         required: false
+ *         type: string
+ *       - name: author
+ *         in: query
+ *         description: Filter by author name (partial match)
+ *         required: false
+ *         type: string
+ *       - name: search
+ *         in: query
+ *         description: Text search across title, author, and description
+ *         required: false
+ *         type: string
+ */
 router.get("/", paginationValidation, bookController.getAllBooks);
 router.get("/genre/:genre", bookController.getBooksByGenre);
 router.get("/:id", bookController.getBookById);
