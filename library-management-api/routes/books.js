@@ -1,7 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 const bookController = require("../controllers/bookController");
+
+// Query parameter validation for GET routes
+const paginationValidation = [
+  query("page")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Page must be a positive integer")
+    .toInt(),
+  query("limit")
+    .optional()
+    .isInt({ min: 1, max: 100 })
+    .withMessage("Limit must be a positive integer between 1 and 100")
+    .toInt(),
+];
 
 // Validation middleware for book creation/update
 const bookValidation = [
@@ -54,7 +68,7 @@ const bookValidation = [
 ];
 
 // Routes
-router.get("/", bookController.getAllBooks);
+router.get("/", paginationValidation, bookController.getAllBooks);
 router.get("/genre/:genre", bookController.getBooksByGenre);
 router.get("/:id", bookController.getBookById);
 router.post("/", bookValidation, bookController.createBook);

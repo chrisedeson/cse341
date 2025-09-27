@@ -4,7 +4,30 @@ const { validationResult } = require("express-validator");
 // Get all books
 const getAllBooks = async (req, res) => {
   try {
-    const { page = 1, limit = 10, genre, author, search } = req.query;
+    let { page = 1, limit = 10, genre, author, search } = req.query;
+
+    // Validate and convert pagination parameters
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    // Validate pagination parameters
+    if (isNaN(page) || page < 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid page parameter. Page must be a positive integer.",
+        received: req.query.page,
+      });
+    }
+
+    if (isNaN(limit) || limit < 1 || limit > 100) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Invalid limit parameter. Limit must be a positive integer between 1 and 100.",
+        received: req.query.limit,
+      });
+    }
+
     const query = {};
 
     // Filter by genre
@@ -23,7 +46,7 @@ const getAllBooks = async (req, res) => {
     }
 
     const books = await Book.find(query)
-      .limit(limit * 1)
+      .limit(limit)
       .skip((page - 1) * limit)
       .sort({ createdAt: -1 });
 

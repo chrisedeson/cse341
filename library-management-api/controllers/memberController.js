@@ -4,7 +4,30 @@ const { validationResult } = require("express-validator");
 // Get all members
 const getAllMembers = async (req, res) => {
   try {
-    const { page = 1, limit = 10, membershipType, isActive } = req.query;
+    let { page = 1, limit = 10, membershipType, isActive } = req.query;
+
+    // Validate and convert pagination parameters
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    // Validate pagination parameters
+    if (isNaN(page) || page < 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid page parameter. Page must be a positive integer.",
+        received: req.query.page,
+      });
+    }
+
+    if (isNaN(limit) || limit < 1 || limit > 100) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Invalid limit parameter. Limit must be a positive integer between 1 and 100.",
+        received: req.query.limit,
+      });
+    }
+
     const query = {};
 
     // Filter by membership type
@@ -19,7 +42,7 @@ const getAllMembers = async (req, res) => {
 
     const members = await Member.find(query)
       .populate("borrowedBooks.bookId", "title author isbn")
-      .limit(limit * 1)
+      .limit(limit)
       .skip((page - 1) * limit)
       .sort({ createdAt: -1 });
 

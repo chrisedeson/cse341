@@ -1,7 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 const memberController = require("../controllers/memberController");
+
+// Query parameter validation for GET routes
+const paginationValidation = [
+  query("page")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Page must be a positive integer")
+    .toInt(),
+  query("limit")
+    .optional()
+    .isInt({ min: 1, max: 100 })
+    .withMessage("Limit must be a positive integer between 1 and 100")
+    .toInt(),
+];
 
 // Validation middleware for member creation/update
 const memberValidation = [
@@ -33,7 +47,7 @@ const memberValidation = [
 ];
 
 // Routes
-router.get("/", memberController.getAllMembers);
+router.get("/", paginationValidation, memberController.getAllMembers);
 router.get("/:id", memberController.getMemberById);
 router.post("/", memberValidation, memberController.createMember);
 router.put("/:id", memberValidation, memberController.updateMember);
