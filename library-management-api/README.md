@@ -2,6 +2,11 @@
 
 A comprehensive RESTful API for managing library books and members with borrowing functionality.
 
+## Live Demo
+
+**API Base URL**: https://library-management-api-ca0s.onrender.com/  
+**Interactive Documentation**: https://library-management-api-ca0s.onrender.com/api-docs
+
 ## Features
 
 - **Book Management**: Full CRUD operations for books with advanced search and filtering
@@ -104,6 +109,21 @@ All API responses follow this structure:
   "pagination": {}, // For paginated responses
   "errors": [] // For validation errors
 }
+```
+
+## Quick Start & Testing
+
+### Try the Live API:
+
+```bash
+# Get all books
+curl https://library-management-api-ca0s.onrender.com/api/books
+
+# Get all members
+curl https://library-management-api-ca0s.onrender.com/api/members
+
+# Or visit the interactive documentation
+# https://library-management-api-ca0s.onrender.com/api-docs
 ```
 
 ## Validation
