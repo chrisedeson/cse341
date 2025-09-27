@@ -10,12 +10,52 @@ dotenv.config();
 
 const app = express();
 
+// CORS Configuration
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === "production"
+      ? [
+          "https://library-management-api-ca0s.onrender.com",
+          "https://*.onrender.com",
+        ]
+      : ["http://localhost:3000", "http://127.0.0.1:3000"],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Swagger Documentation
+// Swagger Documentation with dynamic configuration
+let swaggerDocument;
+try {
+  swaggerDocument = require("./swagger.json");
+  // Update host in production
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.RENDER_EXTERNAL_URL
+  ) {
+    swaggerDocument.host = process.env.RENDER_EXTERNAL_URL.replace(
+      "https://",
+      ""
+    ).replace("http://", "");
+    swaggerDocument.schemes = ["https"];
+  }
+} catch (error) {
+  console.warn(
+    "Swagger documentation not found. Generate it with: npm run swagger"
+  );
+  swaggerDocument = {
+    swagger: "2.0",
+    info: { title: "Library Management API", version: "1.0.0" },
+    paths: {},
+  };
+}
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes

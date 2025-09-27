@@ -11,9 +11,13 @@ const doc = {
       email: "support@libraryapi.com",
     },
   },
-  host: "localhost:3000",
+  host:
+    process.env.NODE_ENV === "production"
+      ? "library-management-api-ca0s.onrender.com"
+      : "localhost:3000",
   basePath: "/api",
-  schemes: ["http", "https"],
+  schemes:
+    process.env.NODE_ENV === "production" ? ["https"] : ["http", "https"],
   consumes: ["application/json"],
   produces: ["application/json"],
   tags: [
