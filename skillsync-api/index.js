@@ -83,7 +83,7 @@ app.use('/api/projects', projectRoutes);
 
 // Welcome endpoint
 app.get('/', (req, res) => {
-  const baseUrl = process.env.NODE_ENV === 'production' ? process.env.BASE_URL || `https://your-render-app.onrender.com` : `http://localhost:${PORT}`;
+  const baseUrl = process.env.NODE_ENV === 'production' ? process.env.BASE_URL || `https://skillsync-api-q8jx.onrender.com` : `http://localhost:${PORT}`;
   res.status(200).json({
     message: 'Welcome to SkillSync API',
     version: '1.0.0',
