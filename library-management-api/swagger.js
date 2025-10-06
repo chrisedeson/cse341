@@ -8,7 +8,7 @@ const doc = {
     version: "1.0.0",
     contact: {
       name: "Christopher Edeson",
-      email: "support@libraryapi.com",
+      email: "edesonchristopher@gmail.com",
     },
   },
   host:

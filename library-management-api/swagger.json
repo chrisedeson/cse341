@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "contact": {
       "name": "Christopher Edeson",
-      "email": "support@libraryapi.com"
+      "email": "edesonchristopher@gmail.com"
     }
   },
   "host": "localhost:3000",
@@ -64,14 +64,10 @@
         "description": "",
         "parameters": [
           {
-            "name": "page",
-            "in": "query",
-            "type": "string"
+            "$ref": "#/parameters/page"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
+            "$ref": "#/parameters/limit"
           },
           {
             "name": "genre",
@@ -113,15 +109,7 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "availableCopies": {
-                  "example": "any"
-                },
-                "totalCopies": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Book"
             }
           }
         ],
@@ -203,15 +191,7 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "availableCopies": {
-                  "example": "any"
-                },
-                "totalCopies": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Book"
             }
           }
         ],
@@ -269,14 +249,10 @@
         "description": "",
         "parameters": [
           {
-            "name": "page",
-            "in": "query",
-            "type": "string"
+            "$ref": "#/parameters/page"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "type": "string"
+            "$ref": "#/parameters/limit"
           },
           {
             "name": "membershipType",
@@ -306,6 +282,15 @@
         "security": [
           {
             "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
           }
         ],
         "responses": {
@@ -360,6 +345,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
           }
         ],
         "responses": {
