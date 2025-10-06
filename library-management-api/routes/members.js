@@ -82,9 +82,161 @@ const memberValidation = [
  *         type: boolean
  */
 router.get("/", paginationValidation, memberController.getAllMembers);
+
+/**
+ * @swagger
+ * /members/{id}:
+ *   get:
+ *     summary: Get a library member by ID
+ *     tags: [Members]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Member ID
+ *         required: true
+ *         type: string
+ */
 router.get("/:id", memberController.getMemberById);
+
+/**
+ * @swagger
+ * /members:
+ *   post:
+ *     summary: Create a new library member
+ *     tags: [Members]
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         description: Member data
+ *         required: true
+ *         schema:
+ *           type: object
+ *           required:
+ *             - firstName
+ *             - lastName
+ *             - email
+ *             - phone
+ *           properties:
+ *             firstName:
+ *               type: string
+ *               maxLength: 50
+ *               example: John
+ *             lastName:
+ *               type: string
+ *               maxLength: 50
+ *               example: Doe
+ *             email:
+ *               type: string
+ *               format: email
+ *               example: john.doe@example.com
+ *             phone:
+ *               type: string
+ *               pattern: '^[\+]?[1-9][\d]{0,15}$'
+ *               example: '+1234567890'
+ *             membershipType:
+ *               type: string
+ *               enum: [Basic, Premium, Student, Senior]
+ *               default: Basic
+ *               example: Premium
+ *             address:
+ *               type: object
+ *               properties:
+ *                 street:
+ *                   type: string
+ *                   maxLength: 100
+ *                   example: 123 Main St
+ *                 city:
+ *                   type: string
+ *                   maxLength: 50
+ *                   example: Anytown
+ *                 state:
+ *                   type: string
+ *                   maxLength: 50
+ *                   example: CA
+ *                 zipCode:
+ *                   type: string
+ *                   pattern: '^\d{5}(-\d{4})?$'
+ *                   example: '12345'
+ */
 router.post("/", memberValidation, memberController.createMember);
+
+/**
+ * @swagger
+ * /members/{id}:
+ *   put:
+ *     summary: Update a library member
+ *     tags: [Members]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Member ID
+ *         required: true
+ *         type: string
+ *       - name: body
+ *         in: body
+ *         description: Updated member data
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *               maxLength: 50
+ *               example: John
+ *             lastName:
+ *               type: string
+ *               maxLength: 50
+ *               example: Doe
+ *             email:
+ *               type: string
+ *               format: email
+ *               example: john.doe@example.com
+ *             phone:
+ *               type: string
+ *               pattern: '^[\+]?[1-9][\d]{0,15}$'
+ *               example: '+1234567890'
+ *             membershipType:
+ *               type: string
+ *               enum: [Basic, Premium, Student, Senior]
+ *               example: Premium
+ *             address:
+ *               type: object
+ *               properties:
+ *                 street:
+ *                   type: string
+ *                   maxLength: 100
+ *                   example: 123 Main St
+ *                 city:
+ *                   type: string
+ *                   maxLength: 50
+ *                   example: Anytown
+ *                 state:
+ *                   type: string
+ *                   maxLength: 50
+ *                   example: CA
+ *                 zipCode:
+ *                   type: string
+ *                   pattern: '^\d{5}(-\d{4})?$'
+ *                   example: '12345'
+ *             isActive:
+ *               type: boolean
+ *               example: true
+ */
 router.put("/:id", memberValidation, memberController.updateMember);
+
+/**
+ * @swagger
+ * /members/{id}:
+ *   delete:
+ *     summary: Delete a library member
+ *     tags: [Members]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Member ID
+ *         required: true
+ *         type: string
+ */
 router.delete("/:id", memberController.deleteMember);
 
 // Book borrowing/returning routes

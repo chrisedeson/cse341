@@ -53,19 +53,12 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination",
-            "type": "integer",
-            "minimum": 1,
-            "default": 1
+            "type": "string"
           },
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items per page (max 100)",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 100,
-            "default": 10
+            "type": "string"
           },
           {
             "name": "genre",
@@ -241,37 +234,22 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number for pagination",
-            "type": "integer",
-            "minimum": 1,
-            "default": 1
+            "type": "string"
           },
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items per page (max 100)",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 100,
-            "default": 10
+            "type": "string"
           },
           {
             "name": "membershipType",
             "in": "query",
-            "description": "Filter by membership type",
-            "type": "string",
-            "enum": [
-              "Basic",
-              "Premium",
-              "Student",
-              "Senior"
-            ]
+            "type": "string"
           },
           {
             "name": "isActive",
             "in": "query",
-            "description": "Filter by active status",
-            "type": "boolean"
+            "type": "string"
           }
         ],
         "responses": {
@@ -288,6 +266,16 @@
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -332,6 +320,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
           }
         ],
         "responses": {
