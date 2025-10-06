@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const { Book, Member } = require('./models');
+const { Book, Member, User } = require('./models');
 
 // Load environment variables
 dotenv.config();
@@ -139,6 +139,34 @@ const sampleBooks = [
   }
 ];
 
+// Sample users data
+const sampleUsers = [
+  {
+    username: "admin",
+    email: "admin@library.com",
+    password: "admin123",
+    role: "admin"
+  },
+  {
+    username: "librarian",
+    email: "librarian@library.com",
+    password: "lib123",
+    role: "user"
+  },
+  {
+    username: "johndoe",
+    email: "john.doe@email.com",
+    password: "john123",
+    role: "user"
+  },
+  {
+    username: "janedoe",
+    email: "jane.doe@email.com",
+    password: "jane123",
+    role: "user"
+  }
+];
+
 // Sample members data
 const sampleMembers = [
   {
@@ -238,7 +266,18 @@ async function seedDatabase() {
     console.log('Clearing existing data...');
     await Book.deleteMany({});
     await Member.deleteMany({});
+    await User.deleteMany({});
     console.log('Existing data cleared!');
+
+    // Insert sample users
+    console.log('Inserting sample users...');
+    const createdUsers = [];
+    for (const userData of sampleUsers) {
+      const user = new User(userData);
+      await user.save();
+      createdUsers.push(user);
+    }
+    console.log(`✅ ${createdUsers.length} users inserted successfully!`);
 
     // Insert sample books
     console.log('Inserting sample books...');
@@ -314,11 +353,25 @@ async function seedDatabase() {
       console.log(`  - ${type}: ${count}`);
     });
 
+    console.log('\nUsers by role:');
+    const userRoleCount = {};
+    sampleUsers.forEach(user => {
+      userRoleCount[user.role] = (userRoleCount[user.role] || 0) + 1;
+    });
+    Object.entries(userRoleCount).forEach(([role, count]) => {
+      console.log(`  - ${role}: ${count}`);
+    });
+
     console.log('\n🚀 Your API is ready to use!');
     console.log('Test endpoints:');
-    console.log('  - GET /api/books');
-    console.log('  - GET /api/members');
+    console.log('  - POST /api/auth/register (create account)');
+    console.log('  - POST /api/auth/login (get token)');
+    console.log('  - GET /api/books (requires auth for protected routes)');
+    console.log('  - GET /api/members (requires auth for protected routes)');
     console.log('  - GET /api-docs (Swagger UI)');
+    console.log('\nSample login credentials:');
+    console.log('  - Admin: admin / admin123');
+    console.log('  - User: johndoe / john123');
 
   } catch (error) {
     console.error('❌ Error seeding database:', error);
@@ -334,4 +387,4 @@ if (require.main === module) {
   seedDatabase();
 }
 
-module.exports = { seedDatabase, sampleBooks, sampleMembers };
+module.exports = { seedDatabase, sampleBooks, sampleMembers, sampleUsers };
