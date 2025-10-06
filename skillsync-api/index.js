@@ -39,8 +39,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
-        description: 'Development server',
+        url: process.env.NODE_ENV === 'production' ? process.env.BASE_URL || `https://skillsync-api-q8jx.onrender.com` : `http://localhost:${PORT}`,
+        description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Development server',
       },
     ],
     components: {
@@ -83,10 +83,11 @@ app.use('/api/projects', projectRoutes);
 
 // Welcome endpoint
 app.get('/', (req, res) => {
+  const baseUrl = process.env.NODE_ENV === 'production' ? process.env.BASE_URL || `https://your-render-app.onrender.com` : `http://localhost:${PORT}`;
   res.status(200).json({
     message: 'Welcome to SkillSync API',
     version: '1.0.0',
-    docs: `http://localhost:${PORT}/api-docs`
+    docs: `${baseUrl}/api-docs`
   });
 });
 
