@@ -2,6 +2,8 @@
 
 A REST API for a Developer Skill Matching Platform built with Node.js, Express, and MongoDB.
 
+**Live API**: https://skillsync-api-q8jx.onrender.com
+
 ## Tech Stack
 
 - Backend: Node.js, Express.js
