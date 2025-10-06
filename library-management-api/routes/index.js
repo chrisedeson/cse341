@@ -4,10 +4,12 @@ const router = express.Router();
 // Import route modules
 const bookRoutes = require("./books");
 const memberRoutes = require("./members");
+const authRoutes = require("./auth");
 
 // Use routes
 router.use("/books", bookRoutes);
 router.use("/members", memberRoutes);
+router.use("/auth", authRoutes);
 
 // API info route
 router.get("/", (req, res) => {
@@ -17,6 +19,7 @@ router.get("/", (req, res) => {
     endpoints: {
       books: "/api/books",
       members: "/api/members",
+      auth: "/api/auth",
       documentation: "/api-docs",
     },
     features: [
@@ -26,6 +29,7 @@ router.get("/", (req, res) => {
       "Search and filtering",
       "Input validation",
       "Comprehensive error handling",
+      "User authentication and authorization",
     ],
   });
 });

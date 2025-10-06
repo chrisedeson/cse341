@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, query } = require("express-validator");
 const bookController = require("../controllers/bookController");
+const { authenticateToken } = require("../middleware/auth");
 
 // Query parameter validation for GET routes
 const paginationValidation = [
@@ -109,8 +110,8 @@ const bookValidation = [
 router.get("/", paginationValidation, bookController.getAllBooks);
 router.get("/genre/:genre", bookController.getBooksByGenre);
 router.get("/:id", bookController.getBookById);
-router.post("/", bookValidation, bookController.createBook);
-router.put("/:id", bookValidation, bookController.updateBook);
-router.delete("/:id", bookController.deleteBook);
+router.post("/", authenticateToken, bookValidation, bookController.createBook);
+router.put("/:id", authenticateToken, bookValidation, bookController.updateBook);
+router.delete("/:id", authenticateToken, bookController.deleteBook);
 
 module.exports = router;

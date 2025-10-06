@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, query } = require("express-validator");
 const memberController = require("../controllers/memberController");
+const { authenticateToken } = require("../middleware/auth");
 
 // Query parameter validation for GET routes
 const paginationValidation = [
@@ -158,7 +159,7 @@ router.get("/:id", memberController.getMemberById);
  *                   pattern: '^\d{5}(-\d{4})?$'
  *                   example: '12345'
  */
-router.post("/", memberValidation, memberController.createMember);
+router.post("/", authenticateToken, memberValidation, memberController.createMember);
 
 /**
  * @swagger
@@ -222,7 +223,7 @@ router.post("/", memberValidation, memberController.createMember);
  *               type: boolean
  *               example: true
  */
-router.put("/:id", memberValidation, memberController.updateMember);
+router.put("/:id", authenticateToken, memberValidation, memberController.updateMember);
 
 /**
  * @swagger
@@ -237,10 +238,10 @@ router.put("/:id", memberValidation, memberController.updateMember);
  *         required: true
  *         type: string
  */
-router.delete("/:id", memberController.deleteMember);
+router.delete("/:id", authenticateToken, memberController.deleteMember);
 
 // Book borrowing/returning routes
-router.post("/:memberId/borrow/:bookId", memberController.borrowBook);
-router.post("/:memberId/return/:bookId", memberController.returnBook);
+router.post("/:memberId/borrow/:bookId", authenticateToken, memberController.borrowBook);
+router.post("/:memberId/return/:bookId", authenticateToken, memberController.returnBook);
 
 module.exports = router;
