@@ -139,21 +139,11 @@ const validateUserUpdate = [
     .isArray({ min: 0, max: 20 })
     .withMessage('Skills must be an array with maximum 20 items'),
 
-  body('skills.*.name')
+  body('skills.*')
     .optional()
     .trim()
     .isLength({ min: 1, max: 30 })
-    .withMessage('Skill name must be between 1 and 30 characters'),
-
-  body('skills.*.level')
-    .optional()
-    .isIn(['beginner', 'intermediate', 'advanced', 'expert'])
-    .withMessage('Skill level must be beginner, intermediate, advanced, or expert'),
-
-  body('skills.*.yearsOfExperience')
-    .optional()
-    .isInt({ min: 0, max: 50 })
-    .withMessage('Years of experience must be between 0 and 50'),
+    .withMessage('Each skill must be between 1 and 30 characters'),
 
   body('preferredProjectTypes')
     .optional()

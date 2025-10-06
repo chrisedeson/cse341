@@ -190,7 +190,7 @@ const getUsers = async (req, res) => {
 
     if (req.query.skills) {
       const skills = Array.isArray(req.query.skills) ? req.query.skills : [req.query.skills];
-      filter['skills.name'] = { $in: skills };
+      filter.skills = { $in: skills };
     }
 
     if (req.query.experienceLevel) {
@@ -357,7 +357,7 @@ const getUserStats = async (req, res) => {
     const topSkills = await User.aggregate([
       { $match: { isAvailable: true } },
       { $unwind: '$skills' },
-      { $group: { _id: '$skills.name', count: { $sum: 1 } } },
+      { $group: { _id: '$skills', count: { $sum: 1 } } },
       { $sort: { count: -1 } },
       { $limit: 10 }
     ]);

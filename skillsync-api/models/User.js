@@ -41,22 +41,7 @@ const userSchema = new mongoose.Schema({
     maxlength: [500, 'Bio cannot be more than 500 characters'],
     default: ''
   },
-  skills: [{
-    name: {
-      type: String,
-      required: true
-    },
-    level: {
-      type: String,
-      enum: ['beginner', 'intermediate', 'advanced', 'expert'],
-      default: 'beginner'
-    },
-    yearsOfExperience: {
-      type: Number,
-      min: 0,
-      default: 0
-    }
-  }],
+  skills: [String],
   experienceLevel: {
     type: String,
     enum: ['junior', 'mid', 'senior', 'lead', 'principal'],
@@ -112,7 +97,6 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ skills: 1 });
 userSchema.index({ experienceLevel: 1 });
 userSchema.index({ isAvailable: 1 });
-userSchema.index({ 'skills.name': 1 });
 
 // Virtual for user's full profile completion percentage
 userSchema.virtual('profileCompletion').get(function() {
@@ -162,7 +146,7 @@ userSchema.statics.findBySkills = function(skills, options = {}) {
   const { experienceLevel, isAvailable = true, limit = 10 } = options;
 
   let query = {
-    'skills.name': { $in: skills },
+    skills: { $in: skills },
     isAvailable
   };
 

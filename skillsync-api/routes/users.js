@@ -55,15 +55,7 @@ const {
  *         skills:
  *           type: array
  *           items:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               level:
- *                 type: string
- *                 enum: [beginner, intermediate, advanced, expert]
- *               yearsOfExperience:
- *                 type: number
+ *             type: string
  *         experienceLevel:
  *           type: string
  *           enum: [junior, mid, senior, lead, principal]
@@ -130,7 +122,7 @@ const {
  *               skills:
  *                 type: array
  *                 items:
- *                   type: object
+ *                   type: string
  *               experienceLevel:
  *                 type: string
  *                 enum: [junior, mid, senior, lead, principal]
@@ -228,7 +220,7 @@ router.post('/login', validateUserLogin, login);
  *               skills:
  *                 type: array
  *                 items:
- *                   type: object
+ *                   type: string
  *     responses:
  *       200:
  *         description: Profile updated successfully
