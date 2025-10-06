@@ -81,6 +81,15 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 
+// Welcome endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to SkillSync API',
+    version: '1.0.0',
+    docs: `http://localhost:${PORT}/api-docs`
+  });
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'SkillSync API is running' });
@@ -106,10 +115,7 @@ app.use((req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
   console.log('Connected to MongoDB Atlas');
   app.listen(PORT, () => {

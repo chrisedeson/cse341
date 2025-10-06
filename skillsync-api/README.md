@@ -60,7 +60,3 @@ Visit `http://localhost:3000/api-docs` for Swagger docs.
 ```bash
 npm test
 ```
-
-## License
-
-ISC
