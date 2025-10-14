@@ -75,7 +75,7 @@ const validateUserRegistration = [
 
   body('preferredProjectTypes.*')
     .optional()
-    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other'])
+    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other'])
     .withMessage('Invalid project type'),
 
   body('hourlyRate')
@@ -90,8 +90,9 @@ const validateUserRegistration = [
 
   body('languages.*')
     .optional()
-    .isIn(['english', 'spanish', 'french', 'german', 'chinese', 'japanese', 'korean', 'portuguese', 'italian', 'russian', 'arabic', 'hindi', 'other'])
-    .withMessage('Invalid language'),
+    .trim()
+    .isLength({ min: 1, max: 30 })
+    .withMessage('Each language must be between 1 and 30 characters'),
 
   handleValidationErrors
 ];
@@ -152,7 +153,7 @@ const validateUserUpdate = [
 
   body('preferredProjectTypes.*')
     .optional()
-    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other'])
+    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other'])
     .withMessage('Invalid project type'),
 
   body('hourlyRate')
@@ -167,8 +168,9 @@ const validateUserUpdate = [
 
   body('languages.*')
     .optional()
-    .isIn(['english', 'spanish', 'french', 'german', 'chinese', 'japanese', 'korean', 'portuguese', 'italian', 'russian', 'arabic', 'hindi', 'other'])
-    .withMessage('Invalid language'),
+    .trim()
+    .isLength({ min: 1, max: 30 })
+    .withMessage('Each language must be between 1 and 30 characters'),
 
   handleValidationErrors
 ];
