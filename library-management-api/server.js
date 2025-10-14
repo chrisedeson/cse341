@@ -2,10 +2,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const passport = require("passport");
+const session = require("express-session");
 const swaggerUi = require("swagger-ui-express");
 
 // Load environment variables
 dotenv.config();
+
+// Initialize Passport
+require("./middleware/auth");
 
 const app = express();
 
@@ -26,6 +31,23 @@ const corsOptions = {
 
 // Middleware
 app.use(cors(corsOptions));
+
+// Session middleware for OAuth
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-session-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

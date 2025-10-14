@@ -34,6 +34,30 @@ const doc = {
       description: "Book borrowing and returning operations",
     },
   ],
+  securityDefinitions: {
+    bearerAuth: {
+      type: "http",
+      scheme: "bearer",
+      bearerFormat: "JWT",
+      description: "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'"
+    },
+    githubAuth: {
+      type: "oauth2",
+      authorizationUrl: "https://github.com/login/oauth/authorize",
+      tokenUrl: "https://github.com/login/oauth/access_token",
+      flow: "authorizationCode",
+      scopes: {
+        "user:email": "Access user email",
+        "read:user": "Read user profile"
+      },
+      description: "GitHub OAuth 2.0 authentication"
+    }
+  },
+  security: [
+    {
+      bearerAuth: []
+    }
+  ],
   parameters: {
     page: {
       name: "page",

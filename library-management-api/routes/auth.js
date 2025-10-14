@@ -1,7 +1,8 @@
 const express = require('express');
+const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 const { User } = require('../models');
-const { generateToken } = require('../middleware/auth');
+const { generateToken, authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -175,6 +176,92 @@ router.post('/logout', (req, res) => {
 router.get('/me', require('../middleware/auth').authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
+
+    res.json({
+      success: true,
+      data: {
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          lastLogin: user.lastLogin,
+          createdAt: user.createdAt
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+// @route   GET /auth/github
+// @desc    Initiate GitHub OAuth login
+// @access  Public
+router.get('/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
+
+// @route   GET /auth/github/callback
+// @desc    GitHub OAuth callback
+// @access  Public
+router.get('/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  async (req, res) => {
+    try {
+      // Generate JWT token for the authenticated user
+      const token = generateToken(req.user._id);
+
+      // Redirect to frontend with token (or return JSON for API clients)
+      const redirectUrl = process.env.NODE_ENV === 'production'
+        ? `${process.env.FRONTEND_URL || 'https://library-management-api-ca0s.onrender.com'}?token=${token}`
+        : `http://localhost:3000?token=${token}`;
+
+      res.redirect(redirectUrl);
+    } catch (error) {
+      console.error('GitHub OAuth callback error:', error);
+      res.redirect('/login?error=oauth_failed');
+    }
+  }
+);
+
+// @route   POST /auth/logout
+// @desc    Logout user
+// @access  Private
+router.post('/logout', authenticateToken, async (req, res) => {
+  try {
+    // In a production app, you might want to blacklist the token
+    // For now, we'll just return success
+    res.json({
+      success: true,
+      message: 'Logged out successfully'
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during logout'
+    });
+  }
+});
+
+// @route   GET /auth/profile
+// @desc    Get current user profile
+// @access  Private
+router.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
 
     res.json({
       success: true,

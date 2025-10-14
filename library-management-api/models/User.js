@@ -20,8 +20,19 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
+    required: function() {
+      // Password is required only if not using GitHub OAuth
+      return !this.githubId;
+    },
     minlength: [6, 'Password must be at least 6 characters long']
+  },
+  githubId: {
+    type: String,
+    sparse: true // Allows multiple null values but unique non-null values
+  },
+  avatar: {
+    type: String,
+    default: ''
   },
   role: {
     type: String,
@@ -53,8 +64,8 @@ userSchema.pre('save', function(next) {
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
-  // Only hash the password if it has been modified (or is new)
-  if (!this.isModified('password')) return next();
+  // Only hash the password if it has been modified (or is new) and exists
+  if (!this.isModified('password') || !this.password) return next();
 
   try {
     // Hash password with cost of 12
@@ -68,6 +79,7 @@ userSchema.pre('save', async function(next) {
 
 // Instance method to check password
 userSchema.methods.comparePassword = async function(candidatePassword) {
+  if (!this.password) return false; // OAuth users don't have passwords
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
