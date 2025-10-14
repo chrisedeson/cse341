@@ -15,10 +15,20 @@ const { passport, generateToken } = require('../middleware/auth');
  *   get:
  *     summary: Initiate GitHub OAuth login
  *     tags: [Auth]
- *     description: Redirects to GitHub for authentication
+ *     description: |
+ *       **⚠️ NOTE: This endpoint must be accessed directly in your browser, not from Swagger UI.**
+ *       
+ *       To test GitHub OAuth:
+ *       1. Open this URL in your browser: `https://skillsync-api-q8jx.onrender.com/api/auth/github`
+ *       2. You will be redirected to GitHub to authorize the app
+ *       3. After authorization, you'll be redirected back with a JWT token
+ *       
+ *       This endpoint redirects to GitHub for OAuth authentication.
  *     responses:
  *       302:
  *         description: Redirects to GitHub OAuth page
+ *       500:
+ *         description: Server error
  */
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 

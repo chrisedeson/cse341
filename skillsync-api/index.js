@@ -23,7 +23,18 @@ const messageRoutes = require('./routes/messages');
 const reviewRoutes = require('./routes/reviews');
 
 // Middleware
-app.use(helmet());
+// Configure Helmet with relaxed CSP for OAuth and Swagger
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", "https://github.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+}));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
