@@ -188,7 +188,7 @@ const validateProjectCreation = [
     .withMessage('Description must be between 10 and 2000 characters'),
 
   body('category')
-    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other'])
+    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other'])
     .withMessage('Invalid project category'),
 
   body('requiredSkills')
@@ -300,7 +300,7 @@ const validateProjectUpdate = [
 
   body('category')
     .optional()
-    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other'])
+    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other'])
     .withMessage('Invalid project category'),
 
   body('status')
@@ -447,7 +447,7 @@ const validateSkillSearch = [
 
   query('category')
     .optional()
-    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other'])
+    .isIn(['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other'])
     .withMessage('Invalid category'),
 
   handleValidationErrors

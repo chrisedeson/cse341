@@ -56,7 +56,8 @@ const {
  *           default: planning
  *         category:
  *           type: string
- *           enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, other]
+ *           enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, frontend, backend, fullstack, open-source, other]
+ *           description: Project category
  *         requiredSkills:
  *           type: array
  *           items:
@@ -187,7 +188,7 @@ const {
  *         name: category
  *         schema:
  *           type: string
- *           enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, other]
+ *           enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, frontend, backend, fullstack, open-source, other]
  *         description: Filter by project category
  *       - in: query
  *         name: skills
@@ -239,9 +240,11 @@ const {
  *                 type: string
  *                 minLength: 10
  *                 maxLength: 2000
+ *                 description: Detailed project description
  *               category:
  *                 type: string
- *                 enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, other]
+ *                 enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, frontend, backend, fullstack, open-source, other]
+ *                 description: Project category
  *               requiredSkills:
  *                 type: array
  *                 minItems: 1
@@ -374,9 +377,11 @@ router.post('/', protect, validateProjectCreation, createProject);
  *                 type: string
  *                 minLength: 10
  *                 maxLength: 2000
+ *                 description: Detailed project description
  *               category:
  *                 type: string
- *                 enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, other]
+ *                 enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, frontend, backend, fullstack, open-source, other]
+ *                 description: Project category
  *               status:
  *                 type: string
  *                 enum: [planning, open, in-progress, completed, cancelled]

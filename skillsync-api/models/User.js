@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
   },
   preferredProjectTypes: [{
     type: String,
-    enum: ['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other']
+    enum: ['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other']
   }],
   hourlyRate: {
     type: Number,
@@ -80,8 +80,7 @@ const userSchema = new mongoose.Schema({
     default: ''
   },
   languages: [{
-    type: String,
-    enum: ['english', 'spanish', 'french', 'german', 'chinese', 'japanese', 'korean', 'portuguese', 'italian', 'russian', 'arabic', 'hindi', 'other']
+    type: String
   }],
   lastActive: {
     type: Date,

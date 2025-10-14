@@ -28,7 +28,7 @@ const projectSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'other'],
+    enum: ['web-development', 'mobile-development', 'data-science', 'machine-learning', 'devops', 'blockchain', 'game-development', 'frontend', 'backend', 'fullstack', 'open-source', 'other'],
     required: [true, 'Project category is required']
   },
   requiredSkills: [{
