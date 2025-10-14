@@ -451,12 +451,184 @@ const validateSkillSearch = [
   handleValidationErrors
 ];
 
+// Application validation rules
+const validateApplicationCreation = [
+  body('project')
+    .isMongoId()
+    .withMessage('Valid project ID is required'),
+
+  body('coverLetter')
+    .trim()
+    .isLength({ min: 50, max: 2000 })
+    .withMessage('Cover letter must be between 50 and 2000 characters'),
+
+  body('proposedRole')
+    .trim()
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Proposed role must be between 2 and 100 characters'),
+
+  body('skillsOffered')
+    .isArray({ min: 1, max: 10 })
+    .withMessage('Skills offered must be an array with 1-10 items'),
+
+  body('availability.hoursPerWeek')
+    .isInt({ min: 1, max: 168 })
+    .withMessage('Hours per week must be between 1 and 168'),
+
+  body('availability.startDate')
+    .isISO8601()
+    .withMessage('Valid start date is required'),
+
+  body('availability.endDate')
+    .optional()
+    .isISO8601()
+    .withMessage('End date must be a valid date'),
+
+  handleValidationErrors
+];
+
+const validateApplicationUpdate = [
+  body('status')
+    .optional()
+    .isIn(['pending', 'under-review', 'accepted', 'rejected', 'withdrawn'])
+    .withMessage('Invalid status'),
+
+  body('reviewNotes')
+    .optional()
+    .isLength({ max: 1000 })
+    .withMessage('Review notes cannot exceed 1000 characters'),
+
+  handleValidationErrors
+];
+
+// Message validation rules
+const validateMessageCreation = [
+  body('recipient')
+    .isMongoId()
+    .withMessage('Valid recipient ID is required'),
+
+  body('subject')
+    .trim()
+    .isLength({ min: 1, max: 200 })
+    .withMessage('Subject must be between 1 and 200 characters'),
+
+  body('content')
+    .trim()
+    .isLength({ min: 1, max: 5000 })
+    .withMessage('Message content must be between 1 and 5000 characters'),
+
+  body('project')
+    .optional()
+    .isMongoId()
+    .withMessage('Invalid project ID'),
+
+  body('priority')
+    .optional()
+    .isIn(['low', 'normal', 'high', 'urgent'])
+    .withMessage('Invalid priority'),
+
+  body('category')
+    .optional()
+    .isIn(['general', 'project-inquiry', 'collaboration', 'feedback', 'support', 'other'])
+    .withMessage('Invalid category'),
+
+  handleValidationErrors
+];
+
+// Review validation rules
+const validateReviewCreation = [
+  body('project')
+    .isMongoId()
+    .withMessage('Valid project ID is required'),
+
+  body('reviewee')
+    .isMongoId()
+    .withMessage('Valid reviewee ID is required'),
+
+  body('rating')
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Rating must be between 1 and 5'),
+
+  body('title')
+    .trim()
+    .isLength({ min: 5, max: 100 })
+    .withMessage('Title must be between 5 and 100 characters'),
+
+  body('comment')
+    .trim()
+    .isLength({ min: 10, max: 2000 })
+    .withMessage('Comment must be between 10 and 2000 characters'),
+
+  body('categories.communication')
+    .optional()
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Communication rating must be between 1 and 5'),
+
+  body('categories.technicalSkills')
+    .optional()
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Technical skills rating must be between 1 and 5'),
+
+  body('categories.reliability')
+    .optional()
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Reliability rating must be between 1 and 5'),
+
+  body('categories.teamwork')
+    .optional()
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Teamwork rating must be between 1 and 5'),
+
+  body('categories.quality')
+    .optional()
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Quality rating must be between 1 and 5'),
+
+  body('wouldWorkAgain')
+    .optional()
+    .isBoolean()
+    .withMessage('Would work again must be true or false'),
+
+  body('isPublic')
+    .optional()
+    .isBoolean()
+    .withMessage('isPublic must be true or false'),
+
+  handleValidationErrors
+];
+
+const validateReviewUpdate = [
+  body('rating')
+    .optional()
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Rating must be between 1 and 5'),
+
+  body('title')
+    .optional()
+    .trim()
+    .isLength({ min: 5, max: 100 })
+    .withMessage('Title must be between 5 and 100 characters'),
+
+  body('comment')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 2000 })
+    .withMessage('Comment must be between 10 and 2000 characters'),
+
+  handleValidationErrors
+];
+
 module.exports = {
   validateUserRegistration,
   validateUserLogin,
   validateUserUpdate,
   validateProjectCreation,
   validateProjectUpdate,
+  validateApplicationCreation,
+  validateApplicationUpdate,
+  validateMessageCreation,
+  validateReviewCreation,
+  validateReviewUpdate,
   validateObjectId,
   validatePagination,
   validateSkillSearch,
