@@ -71,16 +71,22 @@ const {
  *           type: boolean
  *         preferredProjectTypes:
  *           type: array
+ *           description: Types of projects the user prefers to work on
  *           items:
  *             type: string
+ *             enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, frontend, backend, fullstack, open-source, other]
  *         hourlyRate:
  *           type: number
+ *           description: User's hourly rate (0-1000)
  *         timezone:
  *           type: string
+ *           description: User's timezone
  *         languages:
  *           type: array
+ *           description: Languages the user speaks (1-30 characters each, max 10)
  *           items:
  *             type: string
+ *           example: ["English", "Spanish", "日本語"]
  *         lastActive:
  *           type: string
  *           format: date-time
@@ -119,13 +125,18 @@ const {
  *                 minLength: 6
  *               bio:
  *                 type: string
+ *                 maxLength: 500
+ *                 description: Brief description about yourself
  *               skills:
  *                 type: array
+ *                 description: Your technical skills (1-30 characters each, max 20)
  *                 items:
  *                   type: string
+ *                 example: ["JavaScript", "React", "Node.js"]
  *               experienceLevel:
  *                 type: string
  *                 enum: [junior, mid, senior, lead, principal]
+ *                 description: Your experience level
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -207,16 +218,25 @@ router.post('/login', validateUserLogin, login);
  *                 type: boolean
  *               preferredProjectTypes:
  *                 type: array
+ *                 description: Types of projects you prefer to work on
  *                 items:
  *                   type: string
+ *                   enum: [web-development, mobile-development, data-science, machine-learning, devops, blockchain, game-development, frontend, backend, fullstack, open-source, other]
+ *                 example: ["frontend", "open-source"]
  *               hourlyRate:
  *                 type: number
+ *                 description: Your hourly rate (0-1000)
+ *                 example: 50
  *               timezone:
  *                 type: string
+ *                 description: Your timezone
+ *                 example: "America/New_York"
  *               languages:
  *                 type: array
+ *                 description: Languages you speak (1-30 characters each, max 10)
  *                 items:
  *                   type: string
+ *                 example: ["English", "Spanish"]
  *               skills:
  *                 type: array
  *                 items:
