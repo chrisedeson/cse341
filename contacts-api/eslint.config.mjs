@@ -1,9 +1,7 @@
 import js from "@eslint/js";
 import globals from "globals";
 import { defineConfig } from "eslint/config";
-import { createRequire } from 'module';
 
-const require = createRequire(import.meta.url);
 
 export default defineConfig([
   {
